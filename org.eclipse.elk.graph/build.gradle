@@ -1,0 +1,11 @@
+sourceSets.main.java.srcDirs = ['src']
+
+jar.from('.') {
+    include 'model/**'
+}
+
+dependencies {
+    implementation "com.google.guava:guava:${versions.guava}"
+    implementation "org.eclipse.emf:org.eclipse.emf.common:${versions.emf}"
+    implementation "org.eclipse.emf:org.eclipse.emf.ecore:${versions.emf}"
+}

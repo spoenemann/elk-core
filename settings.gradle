@@ -1,0 +1,8 @@
+rootProject.name = 'elk-core'
+
+include 'org.eclipse.elk.alg.common'
+include 'org.eclipse.elk.alg.force'
+include 'org.eclipse.elk.alg.layered'
+include 'org.eclipse.elk.alg.mrtree'
+include 'org.eclipse.elk.core'
+include 'org.eclipse.elk.graph'

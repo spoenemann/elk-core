@@ -1,0 +1,108 @@
+/*******************************************************************************
+ * Copyright (c) 2015, 2020 Kiel University and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+package org.eclipse.elk.alg.force
+
+import org.eclipse.elk.alg.force.ForceLayoutProvider
+import org.eclipse.elk.core.math.ElkPadding
+import org.eclipse.elk.core.util.ExclusiveBounds
+
+/**
+ * Declarations for the ELK Force layout algorithm.
+ */
+bundle {
+    metadataClass options.ForceMetaDataProvider
+    idPrefix org.eclipse.elk.force
+}
+
+algorithm force(ForceLayoutProvider) {
+    label "ELK Force"
+    description
+        "Force-based algorithm provided by the Eclipse Layout Kernel. Implements methods that
+        follow physical analogies by simulating forces that move the nodes into a balanced
+        distribution. Currently the original Eades model and the Fruchterman - Reingold model are
+        supported."
+    metadataClass options.ForceOptions
+    category org.eclipse.elk.force
+    features multi_edges, edge_labels
+    preview images/force_layout.png
+    supports org.eclipse.elk.priority = 1
+    documentation "Priorities set on nodes determine the order in which connected components are placed:
+            components with a higher sum of node priorities will end up
+            before components with a lower sum.
+            Priorities set on edges usually directly influence the attractive force of a connection,
+            with higher priorities corresponding to greater attractive forces."
+    supports org.eclipse.elk.spacing.nodeNode = 80
+    supports org.eclipse.elk.spacing.edgeLabel = 5
+    supports org.eclipse.elk.aspectRatio = 1.6f
+    supports org.eclipse.elk.randomSeed = 1
+    supports org.eclipse.elk.separateConnectedComponents = true
+    supports org.eclipse.elk.padding = new ElkPadding(50)
+    supports org.eclipse.elk.interactive
+    supports org.eclipse.elk.portConstraints
+    supports org.eclipse.elk.edgeLabels.inline = false
+    // Common node micro layout
+    supports org.eclipse.elk.omitNodeMicroLayout
+    supports org.eclipse.elk.nodeSize.options
+    supports org.eclipse.elk.nodeSize.constraints
+    supports org.eclipse.elk.nodeLabels.placement
+    supports org.eclipse.elk.portLabels.placement
+    supports model
+    supports temperature
+    supports iterations
+    supports repulsion
+    supports repulsivePower
+}
+
+option model: ForceModelStrategy {
+    label "Force Model"
+    description
+        "Determines the model for force calculation."
+    default = ForceModelStrategy.FRUCHTERMAN_REINGOLD
+    targets parents
+}
+
+option iterations: int {
+    label "Iterations"
+    description
+        "The number of iterations on the force model."
+    default = 300
+    lowerBound = 1
+    targets parents
+}
+
+option repulsivePower: int {
+    label "Repulsive Power"
+    description
+        "Determines how many bend points are added to the edge; such bend points are regarded as
+        repelling particles in the force model"
+    default = 0
+    lowerBound = 0
+    targets edges
+}
+
+option temperature: double {
+    label "FR Temperature"
+    description
+        "The temperature is used as a scaling factor for particle displacements."
+    default = 0.001
+    lowerBound = ExclusiveBounds.greaterThan(0)
+    targets parents
+    requires model == ForceModelStrategy.FRUCHTERMAN_REINGOLD
+}
+
+option repulsion: double {
+    label "Eades Repulsion"
+    description
+        "Factor for repulsive forces in Eades' model."
+    default = 5.0
+    lowerBound = ExclusiveBounds.greaterThan(0)
+    targets parents
+    requires model == ForceModelStrategy.EADES
+}

@@ -1,0 +1,12 @@
+sourceSets.main {
+    java.srcDirs = ['src', 'src-gen']
+    resources.srcDirs = ['src', 'src-gen']
+}
+
+dependencies {
+    implementation project(':org.eclipse.elk.graph')
+    implementation "com.google.guava:guava:${versions.guava}"
+    implementation "org.eclipse.emf:org.eclipse.emf.common:${versions.emf}"
+    implementation "org.eclipse.emf:org.eclipse.emf.ecore:${versions.emf}"
+    implementation "org.eclipse.emf:org.eclipse.emf.ecore.xmi:${versions.emf}"
+}
