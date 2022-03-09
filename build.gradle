@@ -27,7 +27,7 @@ configure(subprojects) {
         group 'Build'
         description 'Assembles a jar archive containing the sources'
         classifier = 'sources'
-        from sourceSets.main.allSource
+        from sourceSets.main.java
     }
 
     task javadocJar(type: Jar, dependsOn: javadoc) {
